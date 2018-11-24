@@ -19,19 +19,23 @@ import com.lti.model.Registration;
 
 public class JdbcDao {
 	@Autowired
-	JdbcTemplate jdbctemplate;
+	JdbcTemplate jdbcTemplate;
 
-	public JdbcTemplate getJdbctemplate() {
-		return jdbctemplate;
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
 	}
 
-	public void setJdbctemplate(JdbcTemplate jdbctemplate) {
-		this.jdbctemplate = jdbctemplate;
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
+
 	public void savedata(Registration r)
 	{
-		String sql= "insert into group2_registration(?,?,?,?,?,?,?,?,?)";
-		jdbctemplate.update(sql, new Object[] {r.getName(), r.getAge(),r.getUname(), r.getPass(), r.getAcard(), r.getPcard(), r.getBdetail(), r.getAcctype(), r.getAdetail() });
+		System.out.println("test3....");
+		String sql= "insert into group2_registration values('"+r.getName()+"',"+r.getAge()+","+r.getUname()+","+r.getPass()+","+r.getAcard()+","+r.getPcard()+","+r.getBdetail()+","+r.getAcctype()+",'"+r.getAdetail()+"')";
+		jdbcTemplate.update(sql);
+		//String sql= "insert into group2_registration(?,?,?,?,?,?,?,?,?)";
+		//jdbcTemplate.update(sql, new Object[] {r.getName(), r.getAge(),r.getUname(), r.getPass(), r.getAcard(), r.getPcard(), r.getBdetail(), r.getAcctype(), r.getAdetail() });
 		
 	}
 	
@@ -39,7 +43,7 @@ public class JdbcDao {
 		int status=-1;
 		String name=obj.getUname();
 	    String sql="select * from group2_registration where uname=?";  
-	    Login resultobj= jdbctemplate.queryForObject(sql, new Object[]{name},new BeanPropertyRowMapper<Login>(Login.class));
+	    Login resultobj= (Login) jdbcTemplate.queryForObject(sql, new Object[]{name},new BeanPropertyRowMapper<Login>(Login.class));
 	    if(resultobj.getPass().equals(obj.getPass()))
 	    {
 	    	 status=1;
@@ -55,7 +59,7 @@ public class JdbcDao {
 	public Registration getCustomerbyUname(String uname)
 	{
 		String sql = "select * from group2_registration where id=?";
-		Registration r = (Registration) jdbctemplate.queryForObject(sql, new Object[] { uname }, new RowMapper()
+		Registration r = (Registration) jdbcTemplate.queryForObject(sql, new Object[] { uname }, new RowMapper()
 				{
 			
 			public Registration mapRow(ResultSet rs, int rowNum) throws SQLException
@@ -82,7 +86,7 @@ public class JdbcDao {
 	public Registration getEmployeeByUname(String uname)
     {
         String sql = "select * from Employee where id=?";
-        Registration employee = (Registration) jdbctemplate.queryForList(sql, new Object[]
+        Registration employee = (Registration) jdbcTemplate.queryForList(sql, new Object[]
         {uname}, new RowMapper()
         {
             @Override
@@ -108,7 +112,7 @@ public class JdbcDao {
     {
         String sql = "select * from Employee";
 
-        List<Registration> employeeList = jdbctemplate.query(sql, new ResultSetExtractor<List<Registration>>()
+        List<Registration> employeeList = jdbcTemplate.query(sql, new ResultSetExtractor<List<Registration>>()
         {
             public List<Registration> extractData(ResultSet rs) throws SQLException, DataAccessException
             {
@@ -138,7 +142,7 @@ public class JdbcDao {
     public void updateEmployee(Registration r)
     {
         String sql = "update group2_registration set age =?, dept=?,name=? where id=?";
-        jdbctemplate.update(sql, new Object[]
+        jdbcTemplate.update(sql, new Object[]
         { employee.getAge(), employee.getDept(), employee.getName(), employee.getId() });
     }
 

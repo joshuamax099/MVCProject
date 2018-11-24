@@ -15,11 +15,16 @@ import com.lti.model.Registration;
 @Controller
 public class NewController {
 	@Autowired
-	private JdbcDao jdbcDAO;
+	private JdbcDao dbobj;
 	private String uname;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ModelAndView saveEmployee(@ModelAttribute Registration r) {
+		System.out.println("test1....");
+		System.out.println("check");
+		dbobj.savedata(r);
+		System.out.println("test2...");
+		System.out.println("check");
 		return new ModelAndView("LoginPage");
 	}
 
@@ -27,7 +32,7 @@ public class NewController {
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @ModelAttribute Login u) {
 		ModelAndView mv = new ModelAndView("WelcomePage");
 		uname = u.getUname();
-		int flag = jdbcDAO.validate(u);
+		int flag = dbobj.validate(u);
 		if (flag > 0) {
 			HttpSession session = request.getSession();
 			session.setAttribute("uname", uname);

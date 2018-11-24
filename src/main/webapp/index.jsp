@@ -4,7 +4,7 @@
 <table>
 <tr>
 <td>
-<form action="AboutusPage.jsp">
+<form action="AboutusPage.jsp" method="post">
 <input  type="Submit" value="About Us">
 </form>
 </td>

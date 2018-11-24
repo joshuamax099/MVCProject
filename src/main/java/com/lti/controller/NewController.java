@@ -19,14 +19,14 @@ public class NewController {
 	private String uname;
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ModelAndView saveEmployee(@ModelAttribute("register") Registration r) {
-		return new ModelAndView("redirect:/LoginPage");
+	public ModelAndView saveEmployee(@ModelAttribute Registration r) {
+		return new ModelAndView("LoginPage");
 	}
 
 	@RequestMapping("/login")
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @ModelAttribute Login u) {
 		ModelAndView mv = new ModelAndView("WelcomePage");
-		uname = u.getPass();
+		uname = u.getUname();
 		int flag = jdbcDAO.validate(u);
 		if (flag > 0) {
 			HttpSession session = request.getSession();
@@ -34,7 +34,7 @@ public class NewController {
 
 			return mv;
 		} else {
-			return new ModelAndView("redirect:/index");
+			return new ModelAndView("index");
 		}
 
 	}
